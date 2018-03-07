@@ -1,0 +1,24 @@
+<!ElEMENT flight(airports+,airlines+,routes+)>
+<!ELEMENT airports(airport+)>
+<!ELEMENT airport (longitude,latitude)>
+<!ATTLIST airport
+      iata ID #REQUIRED
+      name CDATA #REQUIRED
+      city CDATA #REQUIRED
+      country CDATA #REQUIRED
+>
+<!ELEMENT longitude (#PCDATA)>
+<!ELEMENT latitude (#PCDATA)>
+<!ELEMENT airlines(airline+)>
+<!ELEMENT airline (#PCDATA)>
+<!ATTLIST airline
+      iata ID #REQUIRED
+      country CDATA #REQUIRED
+>
+<!ELEMENT routes(route+)>
+<!ELEMENT route EMPTY>
+<!ATTLIST route
+      airline IDREF #REQUIRED
+      source  IDREF #REQUIRED
+      destination IDREF #REQUIRED
+>
