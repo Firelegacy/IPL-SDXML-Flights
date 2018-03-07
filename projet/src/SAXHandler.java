@@ -2,14 +2,19 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import domaine.Airline;
+import domaine.Airport;
 import domaine.Graph;
+import domaine.Route;
 
 public class SAXHandler extends DefaultHandler{
 	
-	private Airport airport=null;
+	private Airport airport;
 	private boolean bLongitude=false;
 	private boolean bLatitude=false;
-	private Airline airline=null;
+	private Airline airline;
+	private boolean bAirline=false;
+	private Route route;
 	
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -21,6 +26,13 @@ public class SAXHandler extends DefaultHandler{
 		}
 		else if(qName.equals("latitude")){
 			bLatitude=true;
+		}
+		else if(qName.equals("airline")){
+			airline=new Airline(attributes.getValue("iata"), attributes.getValue("country"));
+			bAirline=true;
+		}
+		else if(qName.equals("route")){
+			route = new Route(attributes.getValue("iata"), attributes.getValue("source"), attributes.getValue("destination"));
 		}
 	}
 
@@ -41,6 +53,11 @@ public class SAXHandler extends DefaultHandler{
 			String result =new String(ch, start, length);
 			airport.setLatitude(result);
 			bLatitude=false;
+		}
+		else if(bAirline){
+			String result =new String(ch, start, length);
+			airline.setName(result);
+			bAirline=false;
 		}
 	}
 

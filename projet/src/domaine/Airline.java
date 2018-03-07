@@ -4,11 +4,13 @@ public class Airline {
 	
 	private String iata;
 	private String country;
+	private String name;
 	
 	public Airline(String iata, String country) {
 		super();
 		this.iata = iata;
 		this.country = country;
+		this.name = name;
 	}
 
 	public String getIata() {
@@ -17,5 +19,13 @@ public class Airline {
 
 	public String getCountry() {
 		return country;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
