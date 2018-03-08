@@ -35,11 +35,12 @@ public class Airport {
 
 	public String getLongitude() {
 		return longitude;
-	}	
-	
+	}
+
 	public String getLatitude() {
 		return latitude;
-	}	
+	}
+
 	
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
