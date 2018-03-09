@@ -10,7 +10,6 @@ public class Airline {
 		super();
 		this.iata = iata;
 		this.country = country;
-		this.name = name;
 	}
 
 	public String getIata() {
