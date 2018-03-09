@@ -74,20 +74,8 @@ public class SAXHandler extends DefaultHandler{
 		}
 	}
 	
-	public int getNbListeAirport(){
-		return listeAirport.size();
-	}
-	
-	public int getNbListeAirline(){
-		return listeAirline.size();
-	}
-	
-	public int getNbSourceDest(){
-		return sourceDest.size();
-	}
 
 	public Graph getGraph() {
-		// TODO Auto-generated method stub
 		return new Graph(listeAirline,listeAirport,sourceDest);
 	}
 
