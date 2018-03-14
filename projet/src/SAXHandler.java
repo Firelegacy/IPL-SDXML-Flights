@@ -40,7 +40,7 @@ public class SAXHandler extends DefaultHandler{
 			bAirline=true;
 		}
 		else if(qName.equals("route")){
-			route = new Route(attributes.getValue("iata"), attributes.getValue("source"), attributes.getValue("destination"));
+			route = new Route(attributes.getValue("airline"), attributes.getValue("source"), attributes.getValue("destination"));
 			if(!sourceDest.containsKey(route.getSource())){
 				sourceDest.put(route.getSource(), new HashSet<>());
 			}
