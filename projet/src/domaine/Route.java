@@ -22,8 +22,5 @@ public class Route {
 
 	public String getDestination() {
 		return destination;
-	}
-	
-	
-	
+	}	
 }
