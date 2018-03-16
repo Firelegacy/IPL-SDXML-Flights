@@ -40,7 +40,7 @@ public class SAXHandler extends DefaultHandler{
 			bAirline=true;
 		}
 		else if(qName.equals("route")){
-			route = new Route(attributes.getValue("iata"), attributes.getValue("source"), attributes.getValue("destination"));
+			route = new Route(attributes.getValue("airline"), attributes.getValue("source"), attributes.getValue("destination"));
 			if(!sourceDest.containsKey(route.getSource())){
 				sourceDest.put(route.getSource(), new HashSet<>());
 			}
@@ -57,12 +57,12 @@ public class SAXHandler extends DefaultHandler{
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		if(bLongitude){
 			String result =new String(ch, start, length);
-			airport.setLongitude(result);
+			airport.setLongitude(Double.parseDouble(result));
 			bLongitude=false;
 		}
 		else if(bLatitude){
 			String result =new String(ch, start, length);
-			airport.setLatitude(result);
+			airport.setLatitude(Double.parseDouble(result));
 			bLatitude=false;
 			listeAirport.put(airport.getIata(), airport);
 		}
