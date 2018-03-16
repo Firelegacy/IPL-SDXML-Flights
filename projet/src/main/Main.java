@@ -1,8 +1,10 @@
+package main;
 import java.io.File;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import domaine.Graph;
+import writersParsers.SAXHandler;
 
 public class Main {
 	public static void main(String[] args) {

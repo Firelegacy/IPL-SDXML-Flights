@@ -1,11 +1,11 @@
 package domaine;
 
-import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
 import java.util.Set;
 
 import exceptions.NoRouteBetweenSourceAndDestination;
+import writersParsers.XMLWriter;
 
 public class Graph {
 
@@ -13,6 +13,7 @@ public class Graph {
 	private Map<String, Airport> airports;
 	private Map<String, Set<Route>> routes;
 	private BFSPath bfs;
+	private XMLWriter writer;
 
 	public Graph(Map<String, Airline> airlines, Map<String, Airport> airports, Map<String, Set<Route>> routes) {
 		super();
@@ -20,6 +21,7 @@ public class Graph {
 		this.airports = airports;
 		this.routes = routes;
 		this.bfs = new BFSPath(routes);
+		this.writer = new XMLWriter(airlines, airports, routes);
 	}
 
 	// BFS
@@ -31,7 +33,7 @@ public class Graph {
 			throw new NoRouteBetweenSourceAndDestination();
 		} else {
 			// ecrire dans le fichier
-			writeFile(chemin, fileToSave);
+			writer.writeXMLResultFile(fileToSave, chemin);
 		}
 	}
 
@@ -39,14 +41,5 @@ public class Graph {
 	public void calculerItineraireMiniminantDistance(String source, String destination, String fileToSave) {
 		// TODO Auto-generated method stub
 
-	}
-
-	// Crée un fichier xml et le remplis avec le chemin trouvé
-	private void writeFile(Deque<Route> chemin, String file) {
-		Route r;
-		do {
-			r = chemin.pop();
-			System.out.println("Vol (iata : " + r.getAirline() + "): " + r.getSource() + "-" + r.getDestination());
-		} while (!chemin.isEmpty());
 	}
 }
