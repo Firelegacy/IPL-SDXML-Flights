@@ -58,12 +58,12 @@ public class SAXHandler extends DefaultHandler{
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		if(bLongitude){
 			String result =new String(ch, start, length);
-			airport.setLongitude(result);
+			airport.setLongitude(Double.parseDouble(result));
 			bLongitude=false;
 		}
 		else if(bLatitude){
 			String result =new String(ch, start, length);
-			airport.setLatitude(result);
+			airport.setLatitude(Double.parseDouble(result));
 			bLatitude=false;
 			listeAirport.put(airport.getIata(), airport);
 		}

@@ -6,8 +6,8 @@ public class Airport {
 	private String name;
 	private String city;
 	private String country;
-	private String longitude;
-	private String latitude;
+	private Double longitude;
+	private Double latitude;
 	
 	public Airport(String iata, String name, String city, String country) {
 		super();
@@ -33,20 +33,20 @@ public class Airport {
 		return country;
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
 	
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 }
