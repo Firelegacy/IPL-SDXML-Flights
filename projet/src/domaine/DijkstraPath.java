@@ -59,32 +59,36 @@ public class DijkstraPath {
 
 		while (airportCourant != destination) {	
 			Set<Route> r = routes.get(airportCourant);
-			for (Route route : r) {
-				Airport current = airports.get(route.getSource());
-				Airport dest = airports.get(route.getDestination());
-				//on recupère la distance minimum pour l'aeroport dest dans les provisoires
-				int indiceDest = indicesEtiquettesParAirport.get(dest.getIata());
-				double distanceRecuperee = etiquettesProvisoires.get(indiceDest);
-				double distancePrecedentCourant = distance(current.getLatitude(), current.getLongitude(),
-						dest.getLatitude(), dest.getLongitude());
-				//si pas encore de chemin découvert
-				if (distanceRecuperee==-1) {
-					etiquettesProvisoires.set(indiceDest, distancePrecedentCourant);
-				} else if(distanceRecuperee>distancePrecedente+distancePrecedentCourant){
-					//le nouveau chemin est plus court
-					etiquettesProvisoires.set(indiceDest, distanceRecuperee+distancePrecedentCourant);
+			Airport src = airports.get(airportCourant);
+			if(r != null){
+				for (Route route : r) {
+					Airport dest = airports.get(route.getDestination());
+					//on recupère la distance minimum pour l'aeroport dest dans les provisoires
+					int indiceDest = indicesEtiquettesParAirport.get(dest.getIata());
+					double distanceRecuperee = etiquettesProvisoires.get(indiceDest);
+					double distanceSourceDest = distance(src.getLatitude(), src.getLongitude(),
+							dest.getLatitude(), dest.getLongitude());
+					//si pas encore de chemin découvert
+					if (distanceRecuperee==Double.MAX_VALUE) {
+						etiquettesProvisoires.set(indiceDest, distanceSourceDest);
+					} else if(distanceRecuperee>distancePrecedente+distanceSourceDest){
+						//le nouveau chemin est plus court
+						etiquettesProvisoires.set(indiceDest, distanceRecuperee+distanceSourceDest);
+					}
 				}
 			}
 			
 			//On cherche le prochain courant
 			Double distanceMin = Double.MAX_VALUE;
 			String airportDistanceMin = null;
-			for (Route route : r) {
-				String airp = route.getDestination();
-				int indiceAirp = indicesEtiquettesParAirport.get(airp);
-				if (etiquettesProvisoires.get(indiceAirp)<distanceMin && etiquettesProvisoires.get(indiceAirp)!=-1.0) {
-					distanceMin = etiquettesProvisoires.get(indice);
-					airportDistanceMin = airp;
+			if(r != null){
+				for (Route route : r) {
+					String airp = route.getDestination();
+					int indiceAirp = indicesEtiquettesParAirport.get(airp);
+					if (etiquettesProvisoires.get(indiceAirp)<distanceMin && etiquettesProvisoires.get(indiceAirp)!=-1.0) {
+						distanceMin = etiquettesProvisoires.get(indiceAirp);
+						airportDistanceMin = airp;
+					}
 				}
 			}
 			//on change toutes les variables concernees
