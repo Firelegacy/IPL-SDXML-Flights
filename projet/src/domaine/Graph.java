@@ -55,9 +55,10 @@ public class Graph {
 		while(!cheminCourtTrouver){
 			System.out.println(airportCourant.getIata());
 			List<Airport> listeDestination=new ArrayList<>();						//Initialisation de la liste des destination en partant de la source
-			if(routes.get(airportCourant)!=null){
-				for(Route r : routes.get(airportCourant.getIata())){				
-					if(!airportValider.contains(r.getDestination())){						//Si on n'a pas encore trouver le chemin le plus cours pour la destination
+			if(routes.get(airportCourant.getIata())!=null){
+				for(Route r : routes.get(airportCourant.getIata())){
+					Airport airportTemp = airports.get(r.getDestination());
+					if(!airportValider.contains(airportTemp)){						//Si on n'a pas encore trouver le chemin le plus cours pour la destination
 						listeDestination.add(airports.get(r.getDestination()));			//On l'ajoute a la liste
 					}
 				}

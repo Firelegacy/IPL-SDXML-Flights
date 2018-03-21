@@ -1,0 +1,19 @@
+<!ELEMENT trajet(vol*)>
+<!ATTLIST trajet
+	depart CDATA #REQUIRED
+	destination	CDATA #REQUIRED
+	distance CDATA #REQUIRED
+<!ELEMENT vol(source,destination)>
+<!ATTLIST vol
+	compagnie CDATA #REQUIRED
+	nombreKm CDATA #REQUIRED
+<!ELEMENT source (#PCDATA)>
+<!ATTLIST source
+	iataCode CDATA #REQUIRED
+	pays CDATA #REQUIRED
+	ville CDATA #REQUIRED
+<!ELEMENT destination (#PCDATA)>
+<!ATTLIST destination
+	iataCode CDATA #REQUIRED
+	pays CDATA #REQUIRED
+	ville CDATA #REQUIRED
