@@ -26,9 +26,11 @@ public class DijkstraPath {
 		// Map des indices pour les etiquettes provisoires et definitives (les indices
 		// commencent à 0)
 		Map<String, Integer> indicesEtiquettesParAirport = new HashMap<>();
+		Map<Integer, String> airportEtiquettesParIndice = new HashMap<>();
 		int indice = 0;
 		for (String airport : airports.keySet()) {
 			indicesEtiquettesParAirport.put(airport, indice);
+			airportEtiquettesParIndice.put(indice, airport);
 			indice++;
 		}
 		/* Structures Dijkstra (les indices correspondent à la map*/
@@ -68,12 +70,9 @@ public class DijkstraPath {
 					double distanceRecuperee = etiquettesProvisoires.get(indiceDest);
 					double distanceSourceDest = distance(src.getLatitude(), src.getLongitude(),
 							dest.getLatitude(), dest.getLongitude());
-					//si pas encore de chemin découvert
-					if (distanceRecuperee==Double.MAX_VALUE) {
-						etiquettesProvisoires.set(indiceDest, distanceSourceDest);
-					} else if(distanceRecuperee>distancePrecedente+distanceSourceDest){
-						//le nouveau chemin est plus court
-						etiquettesProvisoires.set(indiceDest, distanceRecuperee+distanceSourceDest);
+					//si on trouve un meilleur chemin
+					if(distanceRecuperee>distancePrecedente+distanceSourceDest){
+						etiquettesProvisoires.set(indiceDest, distancePrecedente+distanceSourceDest);
 					}
 				}
 			}
@@ -81,25 +80,35 @@ public class DijkstraPath {
 			//On cherche le prochain courant
 			Double distanceMin = Double.MAX_VALUE;
 			String airportDistanceMin = null;
-			if(r != null){
+			for(int i = 0; i < etiquettesProvisoires.size();i++){
+				if(etiquettesProvisoires.get(i)<distanceMin && etiquettesProvisoires.get(i)!=-1){
+					System.out.println(airportEtiquettesParIndice.get(i) + "   DISTANCE COMPARER ----> " + etiquettesProvisoires.get(i) + " < " + distanceMin);
+					distanceMin=etiquettesProvisoires.get(i);
+					airportDistanceMin=airportEtiquettesParIndice.get(i);
+				}
+			}
+			System.out.println("AIRPORT DISTMIN ---> " + airportDistanceMin);
+			/*if(r != null){
 				for (Route route : r) {
 					String airp = route.getDestination();
+					System.out.println(airp);
 					int indiceAirp = indicesEtiquettesParAirport.get(airp);
 					if (etiquettesProvisoires.get(indiceAirp)<distanceMin && etiquettesProvisoires.get(indiceAirp)!=-1.0) {
 						distanceMin = etiquettesProvisoires.get(indiceAirp);
 						airportDistanceMin = airp;
+						System.out.println("CHANGER ----> "  + airportDistanceMin);
 					}
 				}
-			}
+			}*/
 			//on change toutes les variables concernees
 			cheminCourant = new ArrayDeque<>();
 			distancePrecedente = distanceMin;
 			airportCourant = airportDistanceMin;
-			try {
+			System.out.println(airportCourant);
+			System.out.println(indicesEtiquettesParAirport.get(airportCourant));
+			System.out.println(etiquettesProvisoires.size());
+			System.out.println(etiquettesProvisoires.stream().filter(e -> e.doubleValue()==-1).count());
 			positionAirportCourant = indicesEtiquettesParAirport.get(airportCourant);
-			} catch (Exception e) {
-				System.out.println(airportCourant);
-			}
 			etiquettesDefinitives.set(positionAirportCourant, distancePrecedente);
 			etiquettesProvisoires.set(positionAirportCourant, -1.0);
 		}

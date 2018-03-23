@@ -38,8 +38,11 @@ public class Graph {
 			// pas de connexion entre les aeroport
 			throw new NoRouteBetweenSourceAndDestination();
 		} else {
+			for(Route r : chemin){
+				System.out.println(r.getSource() +" - "+ r.getDestination());
+			}
 			// ecrire dans le fichier
-			writer.writeXMLResultFile(fileToSave, chemin);
+			writer.writeXMLResultFile(fileToSave, chemin,source,destination);
 		}
 	}
 
@@ -51,7 +54,7 @@ public class Graph {
 			throw new NoRouteBetweenSourceAndDestination();
 		} else {
 			// ecrire dans le fichier
-			writer.writeXMLResultFile(fileToSave, chemin);
+			writer.writeXMLResultFile(fileToSave, chemin,source,destination);
 		}
 	}
 }

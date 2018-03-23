@@ -28,7 +28,7 @@ public class SAXHandler extends DefaultHandler{
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		if(qName.equals("airport")){
-			airport = new Airport(attributes.getValue("iata"),attributes.getValue("name"),attributes.getValue("city"),attributes.getValue("county"));
+			airport = new Airport(attributes.getValue("iata"),attributes.getValue("name"),attributes.getValue("city"),attributes.getValue("country"));
 		}
 		else if(qName.equals("longitude")){
 			bLongitude=true;
