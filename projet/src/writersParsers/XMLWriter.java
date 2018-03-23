@@ -1,11 +1,17 @@
 package writersParsers;
 
-import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.util.Deque;
+import java.util.Map;
+import java.util.Set;
+
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,11 +19,6 @@ import org.w3c.dom.Element;
 import domaine.Airline;
 import domaine.Airport;
 import domaine.Route;
-
-import java.io.File;
-import java.util.Deque;
-import java.util.Map;
-import java.util.Set;
 
 public class XMLWriter {
 	

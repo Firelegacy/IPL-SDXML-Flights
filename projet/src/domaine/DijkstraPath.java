@@ -1,110 +1,71 @@
 package domaine;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import static utils.Util.distance;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
-
-import utils.Util;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class DijkstraPath {
-	Map<String, Set<Route>> routes;
-	Map<String, Airport> airports;
+	private Map<String, Set<Route>> routes;
+	private Map<String, Airport> airports;
 
 	public DijkstraPath(Map<String, Set<Route>> routes, Map<String, Airport> airports) {
 		this.routes = routes;
 		this.airports = airports;
 	}
 
-	public ArrayDeque<Route> findPath(String source, String destination) {
-		// Map des indices pour les etiquettes provisoires et definitives (les indices
-		// commencent à 0)
-		Map<String, Integer> indicesEtiquettesParAirport = new HashMap<>();
-		int indice = 0;
-		for (String airport : airports.keySet()) {
-			indicesEtiquettesParAirport.put(airport, indice);
-			indice++;
-		}
-		/* Structures Dijkstra (les indices correspondent à la map*/
-		// indicesEtiquettesParAirport
-		List<Double> etiquettesDefinitives = new ArrayList<>();
-		List<Double> etiquettesProvisoires = new ArrayList<>();
-		// Sera passé à true quand la destination sera devenue le noeud courant
-		boolean cheminTrouve = false;
-		// Init à MAX des deux listes d'etiquettes
-		for (int i = 0; i < airports.size(); i++) {
-			etiquettesDefinitives.add(Double.MAX_VALUE);
-			etiquettesProvisoires.add(Double.MAX_VALUE);
-		}
-
-		/* Variables pour algorithme + enregistrement de la source*/
-		//Cle = indice dans les etiquettes, valeur = chemin le plus court correspondant au poids des etiquettes
-		Map<Integer, ArrayDeque<Route>> cheminsPlusCourts = new HashMap<>();
-		for (int i = 0; i < airports.size(); i++) {
-			cheminsPlusCourts.put(i, null);
-		}
-		ArrayDeque<Route> cheminCourant = new ArrayDeque<>();
-		Double distancePrecedente = 0.0;
-		String airportCourant = source;
-		int positionAirportCourant = indicesEtiquettesParAirport.get(airportCourant);
-		etiquettesDefinitives.set(positionAirportCourant, distancePrecedente);
-		//On passe les provisoires à -1.0 quand on valide le chemin vers l'aeroport concerne (quand l'aeroport dest devient courant)
-		etiquettesProvisoires.set(positionAirportCourant, -1.0);
-
-		while (airportCourant != destination) {	
-			Set<Route> r = routes.get(airportCourant);
-			Airport src = airports.get(airportCourant);
-			if(r != null){
+	public ArrayDeque<Route> findPath(String src, String dst) {
+		Map<Airport, Double> etiquettesProvisoires = new HashMap<>();
+		Map<Airport, Double> etiquettesDefinitives = new HashMap<>();
+		Map<Airport, Route> parents = new HashMap<>();
+		// Parent array to store shortest path tree
+		Airport source = airports.get(src);
+		Airport destination = airports.get(dst);
+		Airport aeroportCourant = source;
+		etiquettesProvisoires.put(aeroportCourant, 0.0);
+		while (aeroportCourant != destination) {
+			Set<Route> r = routes.get(aeroportCourant.getIata());
+			if (r != null && !r.isEmpty()) { // si pas de routes sortantes de l'aeroport courant
 				for (Route route : r) {
 					Airport dest = airports.get(route.getDestination());
-					//on recupère la distance minimum pour l'aeroport dest dans les provisoires
-					int indiceDest = indicesEtiquettesParAirport.get(dest.getIata());
-					double distanceRecuperee = etiquettesProvisoires.get(indiceDest);
-					double distanceSourceDest = distance(src.getLatitude(), src.getLongitude(),
-							dest.getLatitude(), dest.getLongitude());
-					//si pas encore de chemin découvert
-					if (distanceRecuperee==Double.MAX_VALUE) {
-						etiquettesProvisoires.set(indiceDest, distanceSourceDest);
-					} else if(distanceRecuperee>distancePrecedente+distanceSourceDest){
-						//le nouveau chemin est plus court
-						etiquettesProvisoires.set(indiceDest, distanceRecuperee+distanceSourceDest);
+					double distance = etiquettesProvisoires.get(aeroportCourant)
+							+ distance(aeroportCourant.getLatitude(), aeroportCourant.getLongitude(),
+									dest.getLatitude(), dest.getLongitude());
+					if (etiquettesProvisoires.containsKey(dest)) {
+						if (distance < etiquettesProvisoires.get(dest)) {
+							etiquettesProvisoires.replace(dest, distance);
+							parents.replace(dest, route);
+						}
+					} else if (!etiquettesProvisoires.containsKey(dest) && !etiquettesDefinitives.containsKey(dest)) {
+						etiquettesProvisoires.put(dest, distance);
+						parents.put(dest, route);
 					}
 				}
 			}
-			
-			//On cherche le prochain courant
-			Double distanceMin = Double.MAX_VALUE;
-			String airportDistanceMin = null;
-			if(r != null){
-				for (Route route : r) {
-					String airp = route.getDestination();
-					int indiceAirp = indicesEtiquettesParAirport.get(airp);
-					if (etiquettesProvisoires.get(indiceAirp)<distanceMin && etiquettesProvisoires.get(indiceAirp)!=-1.0) {
-						distanceMin = etiquettesProvisoires.get(indiceAirp);
-						airportDistanceMin = airp;
-					}
-				}
-			}
-			//on change toutes les variables concernees
-			cheminCourant = new ArrayDeque<>();
-			distancePrecedente = distanceMin;
-			airportCourant = airportDistanceMin;
-			try {
-			positionAirportCourant = indicesEtiquettesParAirport.get(airportCourant);
-			} catch (Exception e) {
-				System.out.println(airportCourant);
-			}
-			etiquettesDefinitives.set(positionAirportCourant, distancePrecedente);
-			etiquettesProvisoires.set(positionAirportCourant, -1.0);
-		}
-		
-		return cheminsPlusCourts.get(indicesEtiquettesParAirport.get(destination));
-	}
+			etiquettesDefinitives.put(aeroportCourant, etiquettesProvisoires.get(aeroportCourant));
+			etiquettesProvisoires.remove(aeroportCourant);
 
+			if (etiquettesProvisoires.isEmpty()) { // pas de chemin
+				return null;
+			} else {
+				Entry<Airport, Double> min = Collections.min(etiquettesProvisoires.entrySet(),
+						Comparator.comparing(Entry::getValue));
+				aeroportCourant = min.getKey();
+			}
+		}
+		ArrayDeque<Route> routeSrcDest = new ArrayDeque<>();
+		Airport a = aeroportCourant;
+		while(a!=source) {
+			Route parent = parents.get(a);
+			routeSrcDest.push(parents.get(airports.get(parent.getDestination())));
+			a = airports.get(parent.getSource());
+		}
+		System.out.println(etiquettesProvisoires.get(aeroportCourant) + "(Attendue :15692.73)");
+		return routeSrcDest;
+	}
 }
