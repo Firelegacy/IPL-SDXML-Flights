@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE trajet SYSTEM "result.dtd">
+<trajet depart="Brussels Airport" destination="Faa'a International Airport" distance="15692.738812872138">
+<vol compagnie="Brussels Airlines" nombrekm="535.6183574786736" numero="1">
+<source iata="BRU" pays="Belgium" ville="Brussels">Brussels Airport</source>
+<destination iata="MAN" pays="United Kingdom" ville="Manchester">Manchester Airport</destination>
+</vol>
+<vol compagnie="Virgin Atlantic Airways" nombrekm="8166.04679602851" numero="2">
+<source iata="MAN" pays="United Kingdom" ville="Manchester">Manchester Airport</source>
+<destination iata="LAS" pays="United States" ville="Las Vegas">McCarran International Airport</destination>
+</vol>
+<vol compagnie="American Airlines" nombrekm="379.9759915689007" numero="3">
+<source iata="LAS" pays="United States" ville="Las Vegas">McCarran International Airport</source>
+<destination iata="LAX" pays="United States" ville="Los Angeles">Los Angeles International Airport</destination>
+</vol>
+<vol compagnie="Delta Air Lines" nombrekm="6611.097667796053" numero="4">
+<source iata="LAX" pays="United States" ville="Los Angeles">Los Angeles International Airport</source>
+<destination iata="PPT" pays="French Polynesia" ville="Papeete">Faa'a International Airport</destination>
+</vol>
+</trajet>
