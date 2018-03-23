@@ -35,7 +35,7 @@ public class Graph {
 			throw new NoRouteBetweenSourceAndDestination();
 		} else {
 			// ecrire dans le fichier
-			writer.writeXMLResultFile(fileToSave, chemin);
+			writer.writeXMLResultFile(fileToSave, chemin,source,destination);
 		}
 	}
 
@@ -48,11 +48,8 @@ public class Graph {
 			throw new NoRouteBetweenSourceAndDestination();
 		} else {
 			// ecrire dans le fichier
-			System.out.println("TAILLE DU CHEMIN : " + chemin.size());
-			for (Route route : chemin) {
-				System.out.println(route.getSource() + " - " + route.getDestination());
-			}
-			writer.writeXMLResultFile(fileToSave, chemin);
+			writer.writeXMLResultFile(fileToSave, chemin,source,destination);
+
 		}
 	}
 }
